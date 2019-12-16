@@ -6,12 +6,17 @@
 package it.nbds;
 
 import com.alee.laf.WebLookAndFeel;
+import it.nbds.Model.Book;
 import it.nbds.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -24,6 +29,7 @@ public class MainPanel extends javax.swing.JFrame {
      */
     public MainPanel() {
         initComponents();
+        addDataToTableModel( new ArrayList() );
     }
 
     /**
@@ -66,10 +72,7 @@ public class MainPanel extends javax.swing.JFrame {
         searchResultsTable.setAutoCreateRowSorter(true);
         searchResultsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Book Code", "Book Name", "Author", "Published date"
@@ -84,7 +87,6 @@ public class MainPanel extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(searchResultsTable);
-        searchResultsTable.setColumnModel(new TableModel());
 
         jMenu1.setText("File");
 
@@ -135,8 +137,19 @@ public class MainPanel extends javax.swing.JFrame {
         
     }//GEN-LAST:event_searchTextFieldKeyPressed
 
-    private void addDatToTableModel(  )
+    private void addDataToTableModel( List<Book> books )
     {
+        List insertable = books.stream().limit( 20 ).collect(Collectors.toList());
+        AtomicInteger row = new AtomicInteger(0);
+        for (Object ob : insertable) {
+            Book book = (Book) ob;
+            AtomicInteger col = new AtomicInteger(0);
+            searchResultsTable.getModel().setValueAt(123, row.get(), col.getAndIncrement() );
+            searchResultsTable.getModel().setValueAt(123, row.get(), col.getAndIncrement() );
+            searchResultsTable.getModel().setValueAt(123, row.get(), col.getAndIncrement() );
+            searchResultsTable.getModel().setValueAt(123, row.get(), col.getAndIncrement() );
+            row.incrementAndGet();
+        }
     }
     
     private void loadAllData()
@@ -152,7 +165,6 @@ public class MainPanel extends javax.swing.JFrame {
             
             while (resultSet.next()) {
                 
-                boolean next = resultSet.next();
                 
             }
             
